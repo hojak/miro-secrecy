@@ -1,0 +1,51 @@
+{
+  "name": "igus-miro-secrecy",
+  "version": "0.1.0",
+  "description": "simple tool for hiding secret information on a miro board",
+  "homepage": "",
+  "repository": "",
+  "license": "proprietary",
+  "private": "true",
+  "email": "de-bauhaus@igus.net",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "chai": "latest",
+    "chai-string": "latest",
+    "complexity-report-html": "latest",
+    "eslint": "^7.29.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-mocha": "^9.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "htmllint": "latest",
+    "http-server": "latest",
+    "mocha": "latest",
+    "nyc": "latest",
+    "sinon": "^11.1.1",
+    "sinon-chai": "latest"
+  },
+  "scripts": {
+    "copy": "mkdir -p out && cp -r src/htdocs out/",
+    "bundle": "mkdir -p out/htdocs/js && browserify src/js/main.js -o out/htdocs/js/miro_secrecy.js",
+    "build": "npm run copy && npm run bundle",
+    "clean": "rm -rf out",
+    "local": "npm run build && http-server out/htdocs -c-1 -p 8088",
+    "lint": "npm run lint:js && npm run lint:html",
+    "lint:js": "eslint src/js/*.js test/js/*.js",
+    "lint:jsfix": "eslint --fix src/js/*.js test/js/*.js",
+    "lint:html": "htmllint src/html/*.html",
+    "test": "nyc --reporter=text mocha --recursive",
+    "test:unit": "mocha --recursive test/js",
+    "test:watch": "mocha \"test/**/*.js\" --watch --watch-extensions js",
+    "complexity:src": "complexity-report-html src && mv .complexity-report/report.html .complexity-report/src.html",
+    "complexity:test": "complexity-report-html test && mv .complexity-report/report.html .complexity-report/test.html",
+    "complexity": "npm run complexity:src; npm run complexity:test"
+  },
+  "dependencies": {
+    "dayjs": "^1.10.5"
+  }
+}
