@@ -31,7 +31,12 @@ Provida a the application on a simple local webserver
 npm run local
 ```
 
-Afterwarts, the result is available at the address http://localhost:8081
+Afterwards, the result is available at the address http://localhost:8081
+
+
+### Use the Published Version
+The current release is available at 
+https://miroplug.serv4us.de/secrecy/
 
 
 ### Testing
