@@ -5,9 +5,10 @@ class MiroEncryptionController {
     this.miro = miro
 
     $this.miro.onReady(() => {
+      $this.hideForm()
       $this.registerClickHandler()
-      $this.registerStoreButton ( idStore)
-      $this.registerDecryptButton (idDecrypt)
+      $this.registerStoreButton(idStore)
+      $this.registerDecryptButton(idDecrypt)
     })
   }
 
@@ -16,35 +17,45 @@ class MiroEncryptionController {
     $this.miro.addListener(this.miro.enums.event.SELECTION_UPDATED, () => $this.widgetClicked())
   }
 
-  registerStoreButton ( id ) {
+  registerStoreButton (id) {
     const $this = this
-    document.getElementById(id).onclick = function() {
+    document.getElementById(id).onclick = function () {
       $this.storeEncryptedContentToCard()
     }
   }
 
-  registerDecryptButton ( id ) {
+  registerDecryptButton (id) {
     const $this = this
     document.getElementById(id).onclick = function () {
-      $this.storePlaintextContentToCard ()
+      $this.storePlaintextContentToCard()
     }
   }
 
   storeEncryptedContentToCard () {
-    console.log ( "encrytion not yet implemented")
+    console.log('encrytion not yet implemented')
   }
 
-  storePlaintextContentToCard() {
-    console.log ( "stoing not yewt implemented")
+  storePlaintextContentToCard () {
+    console.log('stoing not yewt implemented')
   }
 
   async widgetClicked () {
     const $this = this
 
     const widgets = await $this.miro.board.selection.get()
-    if (widgets.length > 0) {
-      console.log(widgets[0])
+    if (widgets.length > 0 && widgets[0].type === 'CARD') {
+      $this.displayCardsContent(widgets[0])
+    } else {
+      $this.hideForm()
     }
+  }
+
+  displayCardsContent (cardWidget) {
+    console.log('displaying cards content not yet implemented')
+  }
+
+  hideForm () {
+    console.log('hiding form not yet implemented')
   }
 
   async getContentOfEncryptedCard (id, password) {
