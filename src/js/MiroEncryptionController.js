@@ -72,7 +72,13 @@ class MiroEncryptionController {
 
     const widgets = await $this.miro.board.selection.get()
     if (widgets.length > 0 && widgets[0].type === 'CARD') {
-      $this.displayCardsContent(widgets[0])
+      const decrypted = $this.decryptWidgetContent(widgets[0], document.getElementById('input_password').value)
+
+      if (decrypted) {
+        $this.displayCardsContent(decrypted)
+      } else {
+        $this.displayCardsContent(widgets[0])
+      }
     } else {
       $this.hideForm()
     }
@@ -90,6 +96,22 @@ class MiroEncryptionController {
   hideForm () {
     document.getElementById('tip').style.opacity = 1
     document.getElementById('cardform').style.opacity = 0
+  }
+
+  decryptWidgetContent (card, password) {
+    if (card.title !== 'TOP SECRET' || !card.description.endsWith('=')) {
+      return undefined
+    }
+
+    try {
+      const decrypted = aes256.decrypt(password, card.description)
+      const result = JSON.parse(decrypted)
+      result.id = card.id
+
+      return result
+    } catch (error) {
+      alert('Decryption failed - wrong password?')
+    }
   }
 }
 
