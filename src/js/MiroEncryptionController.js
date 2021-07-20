@@ -1,4 +1,9 @@
+/* global alert */
+
 // const APP_ID = '3074457361019166452'
+
+const aes256 = require('aes256')
+
 class MiroEncryptionController {
   constructor (miro, idStore, idDecrypt) {
     const $this = this
@@ -20,23 +25,46 @@ class MiroEncryptionController {
   registerStoreButton (id) {
     const $this = this
     document.getElementById(id).onclick = function () {
-      $this.storeEncryptedContentToCard()
+      const password = document.getElementById('input_password').value
+
+      if (password.length >= 4) {
+        $this.storeEncryptedContentToCard(password)
+      } else {
+        alert('Please use a password of at least 4 characters!')
+      }
     }
   }
 
   registerDecryptButton (id) {
     const $this = this
+
     document.getElementById(id).onclick = function () {
       $this.storePlaintextContentToCard()
     }
   }
 
-  storeEncryptedContentToCard () {
-    console.log('encrytion not yet implemented')
+  storeEncryptedContentToCard (password) {
+    const data = {
+      meta: 'encrypted',
+      title: document.getElementById('input_title').value,
+      description: document.getElementById('input_description').value
+    }
+
+    const encrypted = aes256.encrypt(password, JSON.stringify(data))
+
+    this.miro.board.widgets.update([{
+      id: document.getElementById('input_widget_id').value,
+      title: 'TOP SECRET',
+      description: encrypted
+    }])
   }
 
   storePlaintextContentToCard () {
-    console.log('stoing not yewt implemented')
+    this.miro.board.widgets.update([{
+      id: document.getElementById('input_widget_id').value,
+      title: document.getElementById('input_title').value,
+      description: document.getElementById('input_description').value
+    }])
   }
 
   async widgetClicked () {
@@ -51,27 +79,17 @@ class MiroEncryptionController {
   }
 
   displayCardsContent (cardWidget) {
-    document.getElementById("input_title").value = cardWidget.title
-    document.getElementById("input_description").value = cardWidget.description
+    document.getElementById('input_title').value = cardWidget.title
+    document.getElementById('input_description').value = cardWidget.description
+    document.getElementById('input_widget_id').value = cardWidget.id
 
-    document.getElementById("tip").style.opacity = 0
-    document.getElementById("cardform").style.opacity = 1
-  
+    document.getElementById('tip').style.opacity = 0
+    document.getElementById('cardform').style.opacity = 1
   }
 
   hideForm () {
-    document.getElementById("tip").style.opacity = 1
-    document.getElementById("cardform").style.opacity = 0
-  }
-
-  async getContentOfEncryptedCard (id, password) {
-    const $this = this
-    return await $this.miro.board.widgets.get({ type: 'CARD', id: id }).map(element => {
-      return {
-        title: 'test',
-        description: 'test'
-      }
-    })
+    document.getElementById('tip').style.opacity = 1
+    document.getElementById('cardform').style.opacity = 0
   }
 }
 

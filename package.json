@@ -48,6 +48,7 @@
     "complexity": "npm run complexity:src; npm run complexity:test"
   },
   "dependencies": {
+    "aes256": "^1.1.0",
     "dayjs": "^1.10.5"
   }
 }
