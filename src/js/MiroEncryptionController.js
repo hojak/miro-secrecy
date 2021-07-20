@@ -99,12 +99,13 @@ class MiroEncryptionController {
   }
 
   decryptWidgetContent (card, password) {
-    if (card.title !== 'TOP SECRET' || !card.description.endsWith('=')) {
+    let description = card.description.replaceAll("&#61;","=")
+    if (card.title !== 'TOP SECRET' || !description.endsWith('=')) {
       return undefined
     }
 
     try {
-      const decrypted = aes256.decrypt(password, card.description)
+      const decrypted = aes256.decrypt(password, description)
       const result = JSON.parse(decrypted)
       result.id = card.id
 
