@@ -6,43 +6,36 @@
   <script src="js/sidebar.js"></script>
 
   <style>
-    .rtb-sidebar-caption {
-      font-size: 14px;
-      font-weight: bold;
-      color: rgba(0, 0, 0, 0.8);
-      padding: 24px 0 0 24px;
-    }
+      label {
+          display: block
+      }
+      input {
+          width: 98%
+      }
+      textarea {
+          width: 98%;
+          height: 6em;
+      }
 
-    textarea {
-      display: block;
-      height: calc(100% - 110px);
-      margin: 20px 0 0 20px;
-      background-color: white;
-      border-radius: 4px;
-      border: 0;
-      width: calc(100% - 40px);
-      text-align: left;
-      font-size: 22px;
-    }
-
-    .tip {
-      color: #cccccc;
-      margin: 20px 0 0 26px;
-    }
+      div.input_group {
+          width: 100%;
+          padding: 5px;
+          margin: 10px 0px;
+      }
   </style>
 </head>
 
 <body>
 
-    <div class="rtb-sidebar-caption">Encrypted Kanban Cards</div>
+    <h1>Encrypted Kanban Cards</h1>
 
     <div class="tip" id="tip">Select widget to see its text</div>
 
     <h3>Your (current) Password</h3>
     <input type="password" name="input_password" id="input_password"/>
 
-    <h3>Edit Selected Card</h3>
     <form id="cardform">
+        <h3>Edit Selected Card</h3>
         <div class="input_group">
             <label for="input_title">Card Title</label>
             <input type="text" name="title" id="input_title" />

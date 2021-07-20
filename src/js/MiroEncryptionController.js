@@ -51,11 +51,17 @@ class MiroEncryptionController {
   }
 
   displayCardsContent (cardWidget) {
-    console.log('displaying cards content not yet implemented')
+    document.getElementById("input_title").value = cardWidget.title
+    document.getElementById("input_description").value = cardWidget.description
+
+    document.getElementById("tip").style.opacity = 0
+    document.getElementById("cardform").style.opacity = 1
+  
   }
 
   hideForm () {
-    console.log('hiding form not yet implemented')
+    document.getElementById("tip").style.opacity = 1
+    document.getElementById("cardform").style.opacity = 0
   }
 
   async getContentOfEncryptedCard (id, password) {
