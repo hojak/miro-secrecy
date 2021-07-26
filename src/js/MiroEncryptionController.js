@@ -75,7 +75,7 @@ class MiroEncryptionController {
     this.miro.board.widgets.update([{
       id: document.getElementById('input_widget_id').value,
       title: document.getElementById('input_title').value,
-      description: document.getElementById('input_description').value
+      description: this.encodeTextToMiro(document.getElementById('input_description').value)
     }])
   }
 
@@ -98,12 +98,31 @@ class MiroEncryptionController {
   }
 
   displayCardsContent (cardWidget) {
-    document.getElementById('input_title').value = cardWidget.title
-    document.getElementById('input_description').value = cardWidget.description
+    document.getElementById('input_title').value = this.stripMiroHtml(cardWidget.title)
+    document.getElementById('input_description').value = this.stripMiroHtml(cardWidget.description)
     document.getElementById('input_widget_id').value = cardWidget.id
 
     document.getElementById('tip').style.opacity = 0
     document.getElementById('cardform').style.opacity = 1
+  }
+
+  stripMiroHtml (content) {
+    return content
+      .replaceAll('<p>', '')
+      .replaceAll('</p>', '\n\n')
+      .replaceAll('<br />', '\n')
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAll('&amp;', '&')
+  }
+
+  encodeTextToMiro (content) {
+    return content
+      .replaceAll('>', '&gt;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('&', '&amp;')
+      .replaceAll('  ', ' &nbsp;')
+      .replaceAll('\n', '<br />')
   }
 
   hideForm () {
