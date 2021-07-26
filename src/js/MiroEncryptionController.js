@@ -123,9 +123,12 @@ class MiroEncryptionController {
       .replaceAll('<p>', '')
       .replaceAll('</p>', '\n\n')
       .replaceAll('<br />', '\n')
+      .replaceAll('<br>', '\n')
       .replaceAll('&lt;', '<')
       .replaceAll('&gt;', '>')
       .replaceAll('&amp;', '&')
+      .replaceAll('&#43;', '+')
+      .replaceAll('&#61;', '=')
   }
 
   encodeTextToMiro (content) {
@@ -143,7 +146,7 @@ class MiroEncryptionController {
   }
 
   decryptWidgetContent (card, password) {
-    let description = card.description
+    let description = card.description.replaceAll('&#43;', '+').replaceAll('&#61;', '=')
 
     if (card.title !== 'TOP SECRET' ||
           !description.startsWith(MiroEncryptionController.ENCRYPTION_PREFIX()) ||
