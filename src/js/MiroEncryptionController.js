@@ -25,14 +25,23 @@ class MiroEncryptionController {
   registerStoreButton (id) {
     const $this = this
     document.getElementById(id).onclick = function () {
+      $this.clearMessages()
       const password = document.getElementById('input_password').value
 
       if (password.length >= 4) {
         $this.storeEncryptedContentToCard(password)
       } else {
-        alert('Please use a password of at least 4 characters!')
+        $this.showAlert('Please use a password of at least 4 characters!')
       }
     }
+  }
+
+  clearMessages() {
+    document.getElementById( 'alert').innerText = ''
+  }
+
+  showAlert ( message ) {
+    document.getElementById( 'alert').innerText = message
   }
 
   registerDecryptButton (id) {
@@ -69,6 +78,7 @@ class MiroEncryptionController {
 
   async widgetClicked () {
     const $this = this
+    $this.clearMessages()
 
     const widgets = await $this.miro.board.selection.get()
     if (widgets.length > 0 && widgets[0].type === 'CARD') {
@@ -111,7 +121,7 @@ class MiroEncryptionController {
 
       return result
     } catch (error) {
-      alert('Decryption failed - wrong password?')
+      this.showAlert('Decryption failed - wrong password?')
     }
   }
 }
