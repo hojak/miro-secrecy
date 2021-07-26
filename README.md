@@ -25,7 +25,7 @@ npm run lint
 
 
 ### Run a Local Version
-Provida a the application on a simple local webserver
+Provide a the application on a simple local webserver
 
 ```sh
 npm run local
