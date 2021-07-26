@@ -175,10 +175,13 @@ class MiroEncryptionController {
 
   getPassword () {
     if (this.miroBoardId) {
-      return window.atob(window.localStorage.getItem('password_' + this.miroBoardId))
-    } else {
-      return undefined
+      const stored = window.localStorage.getItem('password_' + this.miroBoardId)
+      if (stored) {
+        return window.atob(stored)
+      }
     }
+
+    return ''
   }
 
   initOnCurrentMiroBoard () {
