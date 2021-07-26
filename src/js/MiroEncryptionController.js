@@ -3,9 +3,8 @@
 const aes256 = require('aes256')
 
 class MiroEncryptionController {
-
-  static ENCRYPTION_PREFIX () { return '<p>Encrypted content - do not edit!</p><p>'; } 
-  static ENCRYPTION_SUFFIX () { return '</p>'; } 
+  static ENCRYPTION_PREFIX () { return '<p>Encrypted content - do not edit!</p><p>' }
+  static ENCRYPTION_SUFFIX () { return '</p>' }
 
   constructor (miro, idStore, idDecrypt) {
     const $this = this
@@ -38,12 +37,12 @@ class MiroEncryptionController {
     }
   }
 
-  clearMessages() {
-    document.getElementById( 'alert').innerText = ''
+  clearMessages () {
+    document.getElementById('alert').innerText = ''
   }
 
-  showAlert ( message ) {
-    document.getElementById( 'alert').innerText = message
+  showAlert (message) {
+    document.getElementById('alert').innerText = message
   }
 
   registerDecryptButton (id) {
@@ -61,9 +60,9 @@ class MiroEncryptionController {
       description: document.getElementById('input_description').value
     }
 
-    const encrypted = MiroEncryptionController.ENCRYPTION_PREFIX()
-                  + window.btoa(aes256.encrypt(password, JSON.stringify(data)))
-                  + MiroEncryptionController.ENCRYPTION_SUFFIX()
+    const encrypted = MiroEncryptionController.ENCRYPTION_PREFIX() +
+                  window.btoa(aes256.encrypt(password, JSON.stringify(data))) +
+                  MiroEncryptionController.ENCRYPTION_SUFFIX()
 
     this.miro.board.widgets.update([{
       id: document.getElementById('input_widget_id').value,
@@ -112,18 +111,17 @@ class MiroEncryptionController {
     document.getElementById('cardform').style.opacity = 0
   }
 
-
   decryptWidgetContent (card, password) {
     let description = card.description
 
-    if (card.title !== 'TOP SECRET' 
-          || !description.startsWith(MiroEncryptionController.ENCRYPTION_PREFIX())
-          || !description.endsWith ( MiroEncryptionController.ENCRYPTION_SUFFIX())) {
+    if (card.title !== 'TOP SECRET' ||
+          !description.startsWith(MiroEncryptionController.ENCRYPTION_PREFIX()) ||
+          !description.endsWith(MiroEncryptionController.ENCRYPTION_SUFFIX())) {
       return undefined
     }
 
-    description = description.substring ( 
-      MiroEncryptionController.ENCRYPTION_PREFIX().length, 
+    description = description.substring(
+      MiroEncryptionController.ENCRYPTION_PREFIX().length,
       description.length - MiroEncryptionController.ENCRYPTION_SUFFIX().length
     )
 
