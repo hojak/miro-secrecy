@@ -1,10 +1,12 @@
-/* global alert */
-
 // const APP_ID = '3074457361019166452'
 
 const aes256 = require('aes256')
 
 class MiroEncryptionController {
+
+  static ENCRYPTION_PREFIX () { return '<p>Encrypted content - do not edit!</p><p>'; } 
+  static ENCRYPTION_SUFFIX () { return '</p>'; } 
+
   constructor (miro, idStore, idDecrypt) {
     const $this = this
     this.miro = miro
@@ -59,7 +61,9 @@ class MiroEncryptionController {
       description: document.getElementById('input_description').value
     }
 
-    const encrypted = aes256.encrypt(password, JSON.stringify(data))
+    const encrypted = MiroEncryptionController.ENCRYPTION_PREFIX()
+                  + window.btoa(aes256.encrypt(password, JSON.stringify(data)))
+                  + MiroEncryptionController.ENCRYPTION_SUFFIX()
 
     this.miro.board.widgets.update([{
       id: document.getElementById('input_widget_id').value,
@@ -108,14 +112,23 @@ class MiroEncryptionController {
     document.getElementById('cardform').style.opacity = 0
   }
 
+
   decryptWidgetContent (card, password) {
-    const description = card.description.replaceAll('&#61;', '=')
-    if (card.title !== 'TOP SECRET' || !description.endsWith('=')) {
+    let description = card.description
+
+    if (card.title !== 'TOP SECRET' 
+          || !description.startsWith(MiroEncryptionController.ENCRYPTION_PREFIX())
+          || !description.endsWith ( MiroEncryptionController.ENCRYPTION_SUFFIX())) {
       return undefined
     }
 
+    description = description.substring ( 
+      MiroEncryptionController.ENCRYPTION_PREFIX().length, 
+      description.length - MiroEncryptionController.ENCRYPTION_SUFFIX().length
+    )
+
     try {
-      const decrypted = aes256.decrypt(password, description)
+      const decrypted = aes256.decrypt(password, window.atob(description))
       const result = JSON.parse(decrypted)
       result.id = card.id
 
