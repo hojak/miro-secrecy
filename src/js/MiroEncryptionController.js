@@ -15,12 +15,18 @@ class MiroEncryptionController {
       $this.registerClickHandler()
       $this.registerStoreButton(idStore)
       $this.registerDecryptButton(idDecrypt)
+      $this.registerPasswordInputEvents()
     })
   }
 
   async registerClickHandler () {
     const $this = this
     $this.miro.addListener(this.miro.enums.event.SELECTION_UPDATED, () => $this.widgetClicked())
+  }
+
+  registerPasswordInputEvents () {
+    const $this = this
+    document.getElementById('input_password').onchange = function () { $this.widgetClicked() }
   }
 
   registerStoreButton (id) {
