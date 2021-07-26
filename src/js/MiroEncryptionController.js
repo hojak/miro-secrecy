@@ -9,6 +9,7 @@ class MiroEncryptionController {
   constructor (miro, idStore, idDecrypt) {
     const $this = this
     this.miro = miro
+    this.miroBoardId = undefined
 
     $this.miro.onReady(() => {
       $this.hideForm()
@@ -16,6 +17,8 @@ class MiroEncryptionController {
       $this.registerStoreButton(idStore)
       $this.registerDecryptButton(idDecrypt)
       $this.registerPasswordInputEvents()
+
+      this.initOnCurrentMiroBoard()
     })
   }
 
@@ -26,7 +29,10 @@ class MiroEncryptionController {
 
   registerPasswordInputEvents () {
     const $this = this
-    document.getElementById('input_password').onchange = function () { $this.widgetClicked() }
+    document.getElementById('input_password').onchange = function () {
+      $this.storePassword(document.getElementById('input_password').value)
+      $this.widgetClicked()
+    }
   }
 
   registerStoreButton (id) {
@@ -159,6 +165,31 @@ class MiroEncryptionController {
     } catch (error) {
       this.showAlert('Decryption failed - wrong password?')
     }
+  }
+
+  storePassword (password) {
+    if (this.miroBoardId) {
+      window.localStorage.setItem('password_' + this.miroBoardId, window.btoa(password))
+    }
+  }
+
+  getPassword () {
+    if (this.miroBoardId) {
+      return window.atob(window.localStorage.getItem('password_' + this.miroBoardId))
+    } else {
+      return undefined
+    }
+  }
+
+  initOnCurrentMiroBoard () {
+    const $this = this
+    this.miro.board.getInfo().then(data => {
+      this.miroBoardId = data.id
+      const currentPassword = $this.getPassword()
+      if (currentPassword) {
+        document.getElementById('input_password').value = currentPassword
+      }
+    })
   }
 }
 
