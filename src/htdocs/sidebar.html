@@ -6,26 +6,95 @@
   <script src="js/sidebar.js"></script>
 
   <style>
-      label {
-          display: block
+      body {
+          padding: 5px;
+          overflow: scroll;
       }
-      input {
-          width: 98%
+
+      html {
+          font-family: Arial, Helvetica, sans-serif;
+          padding: 0;
+          margin: 0;
       }
+
+      h1 {
+          font-size: 140%;
+          font-weight: bold;
+      }
+
+      h2 {
+          font-size: 120%;
+          font-weight: bold;
+          margin-top: 1em;
+      }
+
       textarea {
-          width: 98%;
-          height: 6em;
+          height: 15em;
+      }
+
+      input[type=text], input[type=password], textarea {
+          background-color: #e0e0e0;
+          padding: 5px;
+          border-radius: 5px;
+          width: 92%;
       }
 
       div.input_group {
+          position: relative;
           width: 100%;
-          padding: 5px;
-          margin: 10px 0px;
+          margin: 1em 0 2em 0;
+
+          border: 1px solid black;
+          border-radius: 5px;
+          padding: 1em .5em;
+          width: auto;
+      }
+
+      div.input_group label {
+        position: absolute;
+        display: block;
+        background-color: white;
+        padding: 2px;
+        position: absolute;
+        top: -.7em;
+        left: 10px;
       }
       div.alert {
           color: #ff0000;
           font-weight: bold;
       }
+      div.tip {
+        color: rgb(255, 166, 0);
+      }
+
+      div.button_group {
+          width: auto;
+          text-align: right;
+      }
+
+      div.button_group input[type=button]{
+          background-repeat: no-repeat;
+          background-position: .3em center;
+          background-size: auto 1.75em;
+
+          padding: .5em .5em .5em 2em;
+          text-align: center;
+          width: 60%;
+          vertical-align: middle;
+          margin: 0 0 .5em 0;
+          font-weight: bold;
+          border-radius: 5px;
+
+      }
+
+      input.encrypt {
+          background-image: url('img/lock.svg');
+      }
+
+      input.plain {
+        background-image: url('img/eye.svg');
+      }
+
   </style>
 </head>
 
@@ -37,11 +106,14 @@
 
     <div class="alert" id="alert"></div>
 
-    <h3>Your (current) Password</h3>
-    <input type="password" name="input_password" id="input_password"/>
+    <h2>Your (current) Password</h2>
+    <div class="input_group">
+        <label for="input_password">Password</label>
+        <input type="password" name="input_password" id="input_password"/>
+    </div>
 
     <form id="cardform">
-        <h3>Edit Selected Card</h3>
+        <h2>Edit Selected Card</h2>
         <div class="input_group">
             <label for="input_title">Card Title</label>
             <input type="text" name="title" id="input_title" />
@@ -54,13 +126,12 @@
         </div>
 
         <div class="button_group">
-            <input type="button" id="button_encrypt" value="Store Encrypted" />
-            <input type="button" id="button_plain" value="Store Plaintext" />
+            <input type="button" id="button_encrypt" value="Store Encrypted" class="encrypt" />
+            <input type="button" id="button_plain" value="Store Plaintext"  class="plain"/>
         </div>
 
         <input type="hidden" name="input_widget_id" id="input_widget_id" />
     </form>
-
 </body>
 
 </html>
